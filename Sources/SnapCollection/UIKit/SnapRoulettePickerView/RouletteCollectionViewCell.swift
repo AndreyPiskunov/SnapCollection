@@ -28,7 +28,6 @@ final class RouletteCollectionViewCell: UICollectionViewCell {
     
     public var stepSubtitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = R.color.subtitleGray()
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.2
         label.textAlignment = .center

@@ -94,7 +94,13 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
     
     // MARK: - Private Properties
     
-    private var feedBackGenerator: UIImpactFeedbackGenerator? = UIImpactFeedbackGenerator(style: .soft)
+    private var feedBackGenerator: UIImpactFeedbackGenerator? = {
+        if #available(iOS 13.0, *) {
+            return UIImpactFeedbackGenerator(style: .soft)
+        } else {
+            return UIImpactFeedbackGenerator(style: .medium)
+        }
+    }()
     
     private var isScrollingAnimationActive = false
     private var currentSelectedCellIndex = 0 {
@@ -164,7 +170,11 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
         let index = indexPathForItem(at: center)?.row
         guard let index, currentSelectedCellIndex != index else { return }
         currentSelectedCellIndex = index
-        feedBackGenerator?.impactOccurred(intensity: feedbackIntensity)
+        if #available(iOS 13.0, *) {
+            feedBackGenerator?.impactOccurred(intensity: feedbackIntensity)
+        } else {
+            feedBackGenerator?.impactOccurred()
+        }
     }
     
     private func processingAnimation() {
