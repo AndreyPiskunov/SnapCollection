@@ -87,6 +87,7 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
     // MARK: - Private Methods
     
     private func setupCollectionView() {
+        backgroundColor = .clear
         dataSource = self
         pickerDelegate = self
         register(
