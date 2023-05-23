@@ -51,6 +51,20 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
         var alphaDifference: CGFloat {
             maxAlpha - minAlpha
         }
+        
+        public init(
+            type: AnimationType,
+            maxScale: CGFloat,
+            minScale: CGFloat,
+            maxAlpha: CGFloat,
+            minAlpha: CGFloat
+        ) {
+            self.type = type
+            self.maxScale = maxScale
+            self.minScale = minScale
+            self.maxAlpha = maxAlpha
+            self.minAlpha = minAlpha
+        }
     }
     
     // MARK: - Public Properties
@@ -111,7 +125,7 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
     
     // MARK: - Initializers
     
-    init() {
+    public init() {
         super.init(frame: .zero, collectionViewLayout: SnapCollectionViewLayout())
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false

@@ -23,7 +23,7 @@
 import UIKit
 
 public protocol SnapPickerViewDelegate: AnyObject {
-    func didSelectNumber(_ number: Int)
+    func didSelectNumber(_ number: Int, pickerView: UIView)
 }
 
 public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDataSource {
@@ -51,7 +51,7 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
     
     // MARK: - Initializers
     
-    override init() {
+    public override init() {
         super.init()
         setupCollectionView()
     }
@@ -101,6 +101,6 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
 extension SnapNumbersPickerView: SnapCollectionViewDelegate {
     public func didSelectItem(at index: Int) {
         guard index < numbers.count else { return }
-        snapPickerViewDelegate?.didSelectNumber(numbers[index])
+        snapPickerViewDelegate?.didSelectNumber(numbers[index], pickerView: self)
     }
 }

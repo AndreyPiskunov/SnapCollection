@@ -71,7 +71,7 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
     
     // MARK: - Initializers
     
-    init() {
+    public init() {
         super.init(frame: .zero)
         setupCollectionView()
         setupCenterIndicatorLine()
@@ -169,6 +169,6 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
 extension SnapRoulettePickerView: SnapCollectionViewDelegate {
     public func didSelectItem(at index: Int) {
         guard index < numbers.count else { return }
-        snapPickerViewDelegate?.didSelectNumber(numbers[index])
+        snapPickerViewDelegate?.didSelectNumber(numbers[index], pickerView: self)
     }
 }

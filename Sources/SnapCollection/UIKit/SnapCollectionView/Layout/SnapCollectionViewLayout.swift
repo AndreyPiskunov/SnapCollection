@@ -47,7 +47,6 @@ final class SnapCollectionViewLayout: UICollectionViewFlowLayout {
             )
             return lhsCellCenter.x < rhsCellCenter.x || lhsCellCenter.y < rhsCellCenter.y
         }) else { return proposedContentOffset }
-        print(centerCellAttributes.indexPath.row)
         return CGPoint(
             x: centerCellAttributes.center.x - collectionViewSize.width * 0.5,
             y: centerCellAttributes.center.y - collectionViewSize.height * 0.5
