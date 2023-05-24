@@ -26,46 +26,7 @@ public protocol SnapCollectionViewDelegate: AnyObject {
     func didSelectItem(at index: Int)
 }
 
-public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
-    
-    // MARK: - Types
-    
-    public enum AnimationType {
-        case onlyCenter
-        case circle
-    }
-    
-    public struct AnimationSettings {
-        let type: AnimationType
-        
-        let maxScale: CGFloat
-        let minScale: CGFloat
-        
-        let maxAlpha: CGFloat
-        let minAlpha: CGFloat
-        
-        var scaleDifference: CGFloat {
-            maxScale - minScale
-        }
-        
-        var alphaDifference: CGFloat {
-            maxAlpha - minAlpha
-        }
-        
-        public init(
-            type: AnimationType,
-            maxScale: CGFloat,
-            minScale: CGFloat,
-            maxAlpha: CGFloat,
-            minAlpha: CGFloat
-        ) {
-            self.type = type
-            self.maxScale = maxScale
-            self.minScale = minScale
-            self.maxAlpha = maxAlpha
-            self.minAlpha = minAlpha
-        }
-    }
+public class SnapCollectionView: UICollectionView {
     
     // MARK: - Public Properties
     
@@ -101,8 +62,6 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
             feedBackGenerator = UIImpactFeedbackGenerator(style: feedBackGeneratorStyle)
         }
     }
-    
-    public var animationSettings: AnimationSettings?
     
     public weak var pickerDelegate: SnapCollectionViewDelegate?
     
@@ -155,23 +114,6 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
             (collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset.top = sideInset
             (collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset.bottom = sideInset
         }
-        processingAnimation()
-    }
-    
-    // MARK: - UICollectionViewDelegate
-    
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.scrollToItem(at: indexPath, at: scrollDirection.center, animated: true)
-        isScrollingAnimationActive = true
-    }
-    
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        processingAnimation()
-        processingFeedback()
-    }
-    
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        isScrollingAnimationActive = false
     }
     
     // MARK: - Private Methods
@@ -190,45 +132,22 @@ public class SnapCollectionView: UICollectionView, UICollectionViewDelegate {
             feedBackGenerator?.impactOccurred()
         }
     }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension SnapCollectionView: UICollectionViewDelegate {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.scrollToItem(at: indexPath, at: scrollDirection.center, animated: true)
+        isScrollingAnimationActive = true
+    }
     
-    private func processingAnimation() {
-        guard let animationSettings else { return }
-        let maxCenterDistance: CGPoint = {
-            switch animationSettings.type {
-            case .onlyCenter:
-                return CGPoint(
-                    x: itemSize.width + spacing,
-                    y: itemSize.height + spacing
-                )
-            case .circle:
-                return CGPoint(
-                    x: bounds.width / 2.0,
-                    y: bounds.height / 2.0
-                )
-            }
-        }()
-        
-        for cell in visibleCells {
-            let cellPositionFromCenter: CGPoint = {
-                CGPoint(
-                    x: abs(bounds.width / 2 - (cell.frame.midX - contentOffset.x)),
-                    y: abs(bounds.height / 2 - (cell.frame.midY - contentOffset.y))
-                )
-            }()
-            let scale = {
-                switch scrollDirection {
-                case .horizontal:
-                    guard cellPositionFromCenter.x < maxCenterDistance.x else { return 0.0 }
-                    return (100.0 - (cellPositionFromCenter.x * 100 / maxCenterDistance.x)) / 100
-                default:
-                    guard cellPositionFromCenter.y < maxCenterDistance.y else { return 0.0 }
-                    return (100.0 - (cellPositionFromCenter.y * 100 / maxCenterDistance.y)) / 100
-                }
-            }()
-            let finalScale = animationSettings.minScale + animationSettings.scaleDifference * scale
-            cell.transform = CGAffineTransformMakeScale(finalScale, finalScale)
-            cell.alpha = animationSettings.minAlpha + animationSettings.alphaDifference * scale
-        }
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        processingFeedback()
+    }
+    
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isScrollingAnimationActive = false
     }
 }
 

@@ -26,7 +26,46 @@ public protocol SnapPickerViewDelegate: AnyObject {
     func didSelectNumber(_ number: Int, pickerView: UIView)
 }
 
-public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDataSource {
+public class SnapNumbersPickerView: SnapCollectionView {
+    
+    // MARK: - Types
+    
+    public enum AnimationType {
+        case onlyCenter
+        case circle
+    }
+    
+    public struct AnimationSettings {
+        let type: AnimationType
+        
+        let maxScale: CGFloat
+        let minScale: CGFloat
+        
+        let maxAlpha: CGFloat
+        let minAlpha: CGFloat
+        
+        var scaleDifference: CGFloat {
+            maxScale - minScale
+        }
+        
+        var alphaDifference: CGFloat {
+            maxAlpha - minAlpha
+        }
+        
+        public init(
+            type: AnimationType,
+            maxScale: CGFloat,
+            minScale: CGFloat,
+            maxAlpha: CGFloat,
+            minAlpha: CGFloat
+        ) {
+            self.type = type
+            self.maxScale = maxScale
+            self.minScale = minScale
+            self.maxAlpha = maxAlpha
+            self.minAlpha = minAlpha
+        }
+    }
     
     // MARK: - Public Properties
     
@@ -37,6 +76,8 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
             numbers = [Int](range)
         }
     }
+    
+    public var animationSettings: AnimationSettings?
     
     public var numbersFont: UIFont = UIFont.systemFont(ofSize: 52, weight: .bold)
     public var numbersAccentColor: UIColor = .init(
@@ -61,28 +102,18 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UICollectionViewDataSource
+    // MARK: - Life Cycle
     
-    public override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        super.collectionView(collectionView, didSelectItemAt: indexPath)
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        processingAnimation()
     }
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        numbers.count
-    }
+    // MARK: - UICollectionViewDelegate
     
-    public func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: String(describing: NumberCollectionViewCell.self),
-            for: indexPath
-        ) as? NumberCollectionViewCell else { return UICollectionViewCell() }
-        cell.textLabel.text = String(numbers[indexPath.row])
-        cell.textLabel.font = numbersFont
-        cell.textLabel.textColor = numbersAccentColor
-        return cell
+    public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        processingAnimation()
     }
     
     // MARK: - Private Methods
@@ -96,6 +127,46 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
             forCellWithReuseIdentifier: String(describing: NumberCollectionViewCell.self)
         )
     }
+    
+    private func processingAnimation() {
+        guard let animationSettings else { return }
+        let maxCenterDistance: CGPoint = {
+            switch animationSettings.type {
+            case .onlyCenter:
+                return CGPoint(
+                    x: itemSize.width + spacing,
+                    y: itemSize.height + spacing
+                )
+            case .circle:
+                return CGPoint(
+                    x: bounds.width / 2.0,
+                    y: bounds.height / 2.0
+                )
+            }
+        }()
+        
+        for cell in visibleCells {
+            let cellPositionFromCenter: CGPoint = {
+                CGPoint(
+                    x: abs(bounds.width / 2 - (cell.frame.midX - contentOffset.x)),
+                    y: abs(bounds.height / 2 - (cell.frame.midY - contentOffset.y))
+                )
+            }()
+            let scale = {
+                switch scrollDirection {
+                case .horizontal:
+                    guard cellPositionFromCenter.x < maxCenterDistance.x else { return 0.0 }
+                    return (100.0 - (cellPositionFromCenter.x * 100 / maxCenterDistance.x)) / 100
+                default:
+                    guard cellPositionFromCenter.y < maxCenterDistance.y else { return 0.0 }
+                    return (100.0 - (cellPositionFromCenter.y * 100 / maxCenterDistance.y)) / 100
+                }
+            }()
+            let finalScale = animationSettings.minScale + animationSettings.scaleDifference * scale
+            cell.transform = CGAffineTransformMakeScale(finalScale, finalScale)
+            cell.alpha = animationSettings.minAlpha + animationSettings.alphaDifference * scale
+        }
+    }
 }
 
 // MARK: - SnapCollectionViewDelegate
@@ -104,5 +175,28 @@ extension SnapNumbersPickerView: SnapCollectionViewDelegate {
     public func didSelectItem(at index: Int) {
         guard index < numbers.count else { return }
         snapPickerViewDelegate?.didSelectNumber(numbers[index], pickerView: self)
+    }
+}
+
+
+// MARK: - UICollectionViewDataSource
+
+extension SnapNumbersPickerView: UICollectionViewDataSource {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        numbers.count
+    }
+
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: String(describing: NumberCollectionViewCell.self),
+            for: indexPath
+        ) as? NumberCollectionViewCell else { return UICollectionViewCell() }
+        cell.textLabel.text = String(numbers[indexPath.row])
+        cell.textLabel.font = numbersFont
+        cell.textLabel.textColor = numbersAccentColor
+        return cell
     }
 }
