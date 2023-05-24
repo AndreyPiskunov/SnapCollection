@@ -37,6 +37,7 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
             numbers = [Int](range)
         }
     }
+    
     public var numbersFont: UIFont = UIFont.systemFont(ofSize: 52, weight: .bold)
     public var numbersAccentColor: UIColor = .init(
         red: 55 / 255,
@@ -67,7 +68,7 @@ public final class SnapNumbersPickerView: SnapCollectionView, UICollectionViewDa
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numbers.count
+        numbers.count
     }
     
     public func collectionView(

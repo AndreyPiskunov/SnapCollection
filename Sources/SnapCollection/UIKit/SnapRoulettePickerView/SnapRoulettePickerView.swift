@@ -33,11 +33,13 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
             numbers = [Int](range)
         }
     }
+    
     public var scrollDirection: UICollectionView.ScrollDirection = .horizontal {
         didSet {
             collectionView.scrollDirection = scrollDirection
         }
     }
+    
     public var spacing: CGFloat = 0.0 {
         didSet {
             collectionView.spacing = spacing
@@ -106,7 +108,6 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
             centerLineView.frame.origin.x = .zero
             centerCircleView.center = centerLineView.center
         }
-        
     }
     
     // MARK: - UICollectionViewDataSource
@@ -115,7 +116,7 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return numbers.count
+        numbers.count
     }
     
     public func collectionView(
@@ -161,7 +162,6 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
         addSubview(centerLineView)
         addSubview(centerCircleView)
     }
-    
 }
 
 // MARK: - SnapCollectionViewDelegate
