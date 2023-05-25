@@ -13,6 +13,7 @@
 		C42F9CB82A1C81DA003DE4B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42F9CB72A1C81DA003DE4B0 /* Assets.xcassets */; };
 		C42F9CBB2A1C81DA003DE4B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42F9CB92A1C81DA003DE4B0 /* LaunchScreen.storyboard */; };
 		C42F9CC92A1C83A3003DE4B0 /* SnapCollection in Frameworks */ = {isa = PBXBuildFile; productRef = C42F9CC82A1C83A3003DE4B0 /* SnapCollection */; };
+		C44514A32A1E719C00BAECB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44514A22A1E719C00BAECB4 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		C42F9CBA2A1C81DA003DE4B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C42F9CBC2A1C81DA003DE4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C42F9CC32A1C8246003DE4B0 /* SnapCollection */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SnapCollection; path = ..; sourceTree = "<group>"; };
+		C44514A22A1E719C00BAECB4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +98,8 @@
 		C42F9CC62A1C837B003DE4B0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				C42F9CB22A1C81D9003DE4B0 /* ViewController.swift */,
+				C445149E2A1E717200BAECB4 /* UIKit */,
+				C445149F2A1E718000BAECB4 /* SwiftUI */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -106,6 +109,22 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C445149E2A1E717200BAECB4 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				C42F9CB22A1C81D9003DE4B0 /* ViewController.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		C445149F2A1E718000BAECB4 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				C44514A22A1E719C00BAECB4 /* ContentView.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,6 +203,7 @@
 			files = (
 				C42F9CB32A1C81D9003DE4B0 /* ViewController.swift in Sources */,
 				C42F9CAF2A1C81D9003DE4B0 /* AppDelegate.swift in Sources */,
+				C44514A32A1E719C00BAECB4 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
