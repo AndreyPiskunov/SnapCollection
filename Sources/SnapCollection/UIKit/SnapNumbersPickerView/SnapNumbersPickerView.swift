@@ -79,7 +79,7 @@ public class SnapNumbersPickerView: SnapCollectionView {
     
     public var animationSettings: AnimationSettings?
     
-    public var numbersFont: UIFont = UIFont.systemFont(ofSize: 52, weight: .bold)
+    public var numbersFont: UIFont? = UIFont.systemFont(ofSize: 52, weight: .bold)
     public var numbersAccentColor: UIColor = .init(
         red: 55 / 255,
         green: 98 / 255,

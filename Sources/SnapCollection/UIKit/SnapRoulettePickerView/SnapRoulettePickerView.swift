@@ -34,24 +34,6 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
         }
     }
     
-    public var scrollDirection: UICollectionView.ScrollDirection = .horizontal {
-        didSet {
-            collectionView.scrollDirection = scrollDirection
-        }
-    }
-    
-    public var spacing: CGFloat = 0.0 {
-        didSet {
-            collectionView.spacing = spacing
-        }
-    }
-    
-    public weak var pickerDelegate: SnapCollectionViewDelegate? {
-        didSet {
-            collectionView.pickerDelegate = pickerDelegate
-        }
-    }
-    
     public var step: Int = 5
     public var accentColor: UIColor = .init(
         red: 55 / 255,
@@ -63,13 +45,13 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
     public var spacingBetweenLineAndStepLabel: CGFloat = 6.0
     public var stepSubtitleLabelFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .medium)
     public var stepSubtitleLabelTextColor: UIColor = .systemGray
+    public lazy var collectionView = SnapCollectionView()
     
     // MARK: - Private Properties
     
     private lazy var numbers = [Int](range)
     private lazy var centerLineView = UIView()
     private lazy var centerCircleView = UIView()
-    private lazy var collectionView = SnapCollectionView()
     
     // MARK: - Initializers
     

@@ -26,16 +26,18 @@ import SnapCollection
 @available(iOS 13.0, *)
 struct ContentView: View {
     @State var items = [Int](0...100)
-    @State private var currentSelectedCellIndex: Int = 0
+    @State private var firstCurrentSelectedCellIndex: Int = 0
+    @State private var secondCurrentSelectedCellIndex: Int = 0
+    @State private var thirdCurrentSelectedCellIndex: Int = 0
 
     var body: some View {
-        VStack {
-            Text("Index \(currentSelectedCellIndex)")
+        VStack(spacing: 40) {
+            Text("First collection index \(firstCurrentSelectedCellIndex)")
             SnapCollection(
                 items: items,
                 itemSize: CGSize(width: 50, height: 50),
-                currentSelectedCellIndex: $currentSelectedCellIndex,
-                scrollDirection: .vertical,
+                currentSelectedCellIndex: $firstCurrentSelectedCellIndex,
+                scrollDirection: .horizontal,
                 spacing: 10.0,
                 cell: { indexPath, item in
                     Button(action: shuffle) {
@@ -45,7 +47,32 @@ struct ContentView: View {
                             .background(Color.blue)
                     }
                 })
-            .frame(maxWidth: 50, maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: 50)
+            Text("Second collection index \(secondCurrentSelectedCellIndex)")
+            SnapNumbersPicker(
+                range: 0...100,
+                itemSize: CGSize(width: 73, height: 76),
+                scrollDirection: .horizontal,
+                currentSelectedCellIndex: $secondCurrentSelectedCellIndex,
+                animationSettings: .init(
+                    type: .onlyCenter,
+                    maxScale: 1.4,
+                    minScale: 1.0,
+                    maxAlpha: 1.0,
+                    minAlpha: 0.35
+                ),
+                spacing: 10.0
+            )
+            .frame(maxWidth: .infinity, maxHeight: 76)
+            Text("Third collection index \(thirdCurrentSelectedCellIndex)")
+            SnapRoulettePicker(
+                range: 50...250,
+                step: 5,
+                scrollDirection: .horizontal,
+                currentSelectedCellIndex: $thirdCurrentSelectedCellIndex,
+                spacing: 14.0
+            )
+            .frame(maxWidth: .infinity, maxHeight: 76)
         }
     }
 

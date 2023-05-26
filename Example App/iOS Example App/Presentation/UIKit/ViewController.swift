@@ -57,8 +57,8 @@ class ViewController: UIViewController {
             origin: .init(x: 0, y: 180),
             size: .init(width: view.frame.size.width, height: 76)
         )
-        horizontallyRoulettePickerView.scrollDirection = .horizontal
-        horizontallyRoulettePickerView.spacing = 14
+        horizontallyRoulettePickerView.collectionView.scrollDirection = .horizontal
+        horizontallyRoulettePickerView.collectionView.spacing = 14
         horizontallyRoulettePickerView.snapPickerViewDelegate = self
         view.addSubview(horizontallyRoulettePickerView)
     }
