@@ -36,6 +36,7 @@ struct ContentView: View {
                 itemSize: CGSize(width: 50, height: 50),
                 currentSelectedCellIndex: $currentSelectedCellIndex,
                 scrollDirection: .vertical,
+                spacing: 10.0,
                 cell: { indexPath, item in
                     Button(action: shuffle) {
                         Text(String(item))

@@ -106,6 +106,9 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
         collectionView.pickerDelegate = context.coordinator
         collectionView.scrollDirection = scrollDirection
         collectionView.itemSize = itemSize
+        collectionView.spacing = spacing ?? 0.0
+        collectionView.feedbackIntensity = feedbackIntensity ?? 0.7
+        collectionView.feedBackGeneratorStyle = feedBackGeneratorStyle ?? .soft
         collectionView.register(HostCell.self, forCellWithReuseIdentifier: cellIdentifier)
         
         let dataSource = Coordinator.DataSource(collectionView: collectionView) { collectionView, indexPath, item in
@@ -127,9 +130,8 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
     
     private func snapshot() -> NSDiffableDataSourceSnapshot<Int, Item> {
         var snapshot = NSDiffableDataSourceSnapshot<Int, Item>()
-        let row = CollectionRow(section: 0, items: items)
-        snapshot.appendSections([row.section])
-        snapshot.appendItems(row.items, toSection: row.section)
+        snapshot.appendSections([.zero])
+        snapshot.appendItems(items, toSection: .zero)
         return snapshot
     }
     
