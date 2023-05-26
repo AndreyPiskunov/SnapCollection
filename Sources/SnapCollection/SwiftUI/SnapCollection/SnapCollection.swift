@@ -35,7 +35,7 @@ public struct CollectionRow<Section: Hashable, Item: Hashable>: Hashable {
 @available(iOS 13.0, *)
 public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
     
-    public class Coordinator: NSObject, UICollectionViewDelegate {
+    public class Coordinator: NSObject, SnapCollectionViewDelegate {
         
         // MARK: - Types
         
@@ -44,14 +44,23 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
         // MARK: - Private Properties
         
         fileprivate var dataSource: DataSource? = nil
-        fileprivate var isFocusable: Bool = false
+
+        private let collection: SnapCollection
         
-        // MARK: - UICollectionViewDelegate
+        // MARK: - Initializers
         
-        public func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
-            return isFocusable
+        init(_ collection: SnapCollection) {
+            self.collection = collection
+        }
+        
+        // MARK: - SnapCollectionViewDelegate
+        
+        public func didSelectItem(at index: Int) {
+            collection.currentSelectedCellIndex = index
         }
     }
+    
+    // MARK: - Public Properties
     
     let items: [Item]
     let scrollDirection: UICollectionView.ScrollDirection
@@ -61,9 +70,14 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
     let feedBackGeneratorStyle: UIImpactFeedbackGenerator.FeedbackStyle?
     let cell: (IndexPath, Item) -> Cell
     
+    @Binding var currentSelectedCellIndex: Int
+    
+    // MARK: - Initializers
+    
     public init(
         items: [Item],
         itemSize: CGSize,
+        currentSelectedCellIndex: Binding<Int>,
         scrollDirection: UICollectionView.ScrollDirection,
         spacing: CGFloat? = nil,
         feedbackIntensity: CGFloat? = nil,
@@ -72,6 +86,7 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
     ) {
         self.items = items
         self.itemSize = itemSize
+        self._currentSelectedCellIndex = currentSelectedCellIndex
         self.scrollDirection = scrollDirection
         self.spacing = spacing
         self.feedbackIntensity = feedbackIntensity
@@ -79,14 +94,16 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
         self.cell = cell
     }
     
+    // MARK: - Public Methods
+    
     public func makeCoordinator() -> Coordinator {
-        return Coordinator()
+        return Coordinator(self)
     }
     
     public func makeUIView(context: Context) -> UICollectionView {
         let cellIdentifier = String(describing: HostCell.self)
         let collectionView = SnapCollectionView()
-        collectionView.delegate = context.coordinator
+        collectionView.pickerDelegate = context.coordinator
         collectionView.scrollDirection = scrollDirection
         collectionView.itemSize = itemSize
         collectionView.register(HostCell.self, forCellWithReuseIdentifier: cellIdentifier)
@@ -122,10 +139,8 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
         guard let dataSource = coordinator.dataSource else { return }
         
         dataSource.apply(snapshot(), animatingDifferences: animated) {
-            coordinator.isFocusable = true
             collectionView.setNeedsFocusUpdate()
             collectionView.updateFocusIfNeeded()
-            coordinator.isFocusable = false
         }
     }
 }

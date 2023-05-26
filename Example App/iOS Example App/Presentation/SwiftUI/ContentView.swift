@@ -26,23 +26,28 @@ import SnapCollection
 @available(iOS 13.0, *)
 struct ContentView: View {
     @State var items = [Int](0...100)
-    
+    @State private var currentSelectedCellIndex: Int = 0
+
     var body: some View {
-        SnapCollection(
-            items: items,
-            itemSize: CGSize(width: 50, height: 50),
-            scrollDirection: .vertical,
-            cell: { indexPath, item in
-                Button(action: shuffle) {
-                    Text(String(item))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .foregroundColor(.white)
-                        .background(Color.blue)
-                }
-            })
-        .frame(maxWidth: 50, maxHeight: .infinity)
+        VStack {
+            Text("Index \(currentSelectedCellIndex)")
+            SnapCollection(
+                items: items,
+                itemSize: CGSize(width: 50, height: 50),
+                currentSelectedCellIndex: $currentSelectedCellIndex,
+                scrollDirection: .vertical,
+                cell: { indexPath, item in
+                    Button(action: shuffle) {
+                        Text(String(item))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                    }
+                })
+            .frame(maxWidth: 50, maxHeight: .infinity)
+        }
     }
-    
+
     private func shuffle() {
         items.shuffle()
     }
