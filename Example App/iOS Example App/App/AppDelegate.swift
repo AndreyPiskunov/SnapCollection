@@ -32,11 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         let tabBarController = UITabBarController()
         let uiKitController = ViewController()
-        uiKitController.tabBarItem = UITabBarItem(title: "UIKit", image: UIImage(named: "car.rear.fill"), tag: 0)
         tabBarController.viewControllers = [uiKitController]
         if #available(iOS 13.0, *) {
+            uiKitController.tabBarItem = UITabBarItem(title: "UIKit", image: UIImage(systemName: "car.rear.fill"), tag: 0)
             let swiftUIController = UIHostingController(rootView: ContentView())
-            swiftUIController.tabBarItem = UITabBarItem(title: "SwiftUI", image: UIImage(named: "bolt.car.fill"), tag: 1)
+            swiftUIController.tabBarItem = UITabBarItem(title: "SwiftUI", image: UIImage(systemName: "bolt.car.fill"), tag: 1)
             tabBarController.viewControllers?.append(swiftUIController)
         }
         window?.rootViewController = tabBarController
