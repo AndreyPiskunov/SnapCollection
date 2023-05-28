@@ -26,25 +26,32 @@ public final class SnapRoulettePickerView: UIView, UICollectionViewDataSource {
     
     // MARK: - Public Properties
     
+    /// Delegate that returns the index of the current central element of the collection.
     public var snapPickerViewDelegate: SnapPickerViewDelegate?
-    
+    /// The range of numbers to select in the picker.
     public var range: ClosedRange<Int> = 50...250 {
         didSet {
             numbers = [Int](range)
         }
     }
-    
+    /// Step with which the numbers on the roulette wheel will go.
     public var step: Int = 5
+    /// Accent color of lines in roulette.
     public var accentColor: UIColor = .init(
         red: 55 / 255,
         green: 98 / 255,
         blue: 234 / 255,
         alpha: 1.0
     )
+    /// Width of roulette lines.
     public var lineWidth: CGFloat = 4.0
+    /// The spacing between the roulette lines and the label which displays the pitch of the numbers.
     public var spacingBetweenLineAndStepLabel: CGFloat = 6.0
+    /// The font of the label that displays the pitch of the numbers in the roulette wheel.
     public var stepSubtitleLabelFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .medium)
+    /// The color of the text in the label which displays the step of numbers in the roulette wheel.
     public var stepSubtitleLabelTextColor: UIColor = .systemGray
+    /// The main collection of roulette.
     public lazy var collectionView = SnapCollectionView()
     
     // MARK: - Private Properties

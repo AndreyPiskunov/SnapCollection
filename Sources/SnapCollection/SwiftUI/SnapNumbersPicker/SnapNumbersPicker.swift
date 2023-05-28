@@ -44,16 +44,25 @@ public struct SnapNumbersPicker: UIViewRepresentable {
     
     // MARK: - Public Properties
     
+    /// The range of numbers to select in the picker.
     let range: ClosedRange<Int>
+    /// The default size to use for cells.
     let itemSize: CGSize
+    /// The scroll direction of the grid.
     let scrollDirection: UICollectionView.ScrollDirection
+    /// Collection scrolling animation.
     let animationSettings: SnapNumbersPickerView.AnimationSettings?
+    /// The font of numbers in the picker.
     let numbersFont: UIFont?
+    /// Color of numbers in the picker.
     let numbersAccentColor: UIColor?
+    /// The spacing to use between items.
     let spacing: CGFloat?
+    /// The intensity of tactile feedback during the scroll collection.
     let feedbackIntensity: CGFloat?
+    /// Tactile feedback style during collection scrolling.
     let feedBackGeneratorStyle: UIImpactFeedbackGenerator.FeedbackStyle?
-    
+    /// The observed value that is responsible for the index of the current central element.
     @Binding var currentSelectedCellIndex: Int
     
     // MARK: - Initializers

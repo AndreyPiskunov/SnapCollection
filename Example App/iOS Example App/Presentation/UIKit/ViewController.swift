@@ -54,7 +54,7 @@ class ViewController: UIViewController {
         view.addSubview(horizontallyNumbersPickerView)
         
         horizontallyRoulettePickerView.frame = CGRect(
-            origin: .init(x: 0, y: 180),
+            origin: .init(x: 0, y: horizontallyNumbersPickerView.frame.maxY + 10),
             size: .init(width: view.frame.size.width, height: 76)
         )
         horizontallyRoulettePickerView.collectionView.scrollDirection = .horizontal

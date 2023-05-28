@@ -44,18 +44,29 @@ public struct SnapRoulettePicker: UIViewRepresentable {
     
     // MARK: - Public Properties
     
+    /// The range of numbers to select in the picker.
     let range: ClosedRange<Int>
+    /// Step with which the numbers on the roulette wheel will go.
     let step: Int
+    /// The scroll direction of the grid.
     let scrollDirection: UICollectionView.ScrollDirection
+    /// Accent color of lines in roulette.
     let accentColor: UIColor?
+    /// Width of roulette lines.
     let lineWidth: CGFloat?
+    /// The spacing between the roulette lines and the label which displays the pitch of the numbers.
     let spacingBetweenLineAndStepLabel: CGFloat?
+    /// The font of the label that displays the pitch of the numbers in the roulette wheel.
     let stepSubtitleLabelFont: UIFont?
+    /// The color of the text in the label which displays the step of numbers in the roulette wheel.
     let stepSubtitleLabelTextColor: UIColor?
+    /// The spacing to use between items.
     let spacing: CGFloat?
+    /// The intensity of tactile feedback during the scroll collection.
     let feedbackIntensity: CGFloat?
+    /// Tactile feedback style during collection scrolling.
     let feedBackGeneratorStyle: UIImpactFeedbackGenerator.FeedbackStyle?
-    
+    /// The observed value that is responsible for the index of the current central element.
     @Binding var currentSelectedCellIndex: Int
     
     // MARK: - Initializers

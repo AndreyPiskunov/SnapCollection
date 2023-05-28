@@ -30,26 +30,26 @@ public class SnapCollectionView: UICollectionView {
     
     // MARK: - Public Properties
     
+    /// The scroll direction of the grid.
     public var scrollDirection: ScrollDirection = .horizontal {
         didSet {
             (collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = scrollDirection
         }
     }
-    
+    /// The default size to use for cells.
     public var itemSize: CGSize = .zero {
         didSet {
             (collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = itemSize
         }
     }
-    
+    /// The spacing to use between items.
     public var spacing: CGFloat = .zero {
         didSet {
             (collectionViewLayout as? UICollectionViewFlowLayout)?.minimumLineSpacing = spacing
         }
     }
-    
+    /// The intensity of tactile feedback during the scroll collection.
     public var feedbackIntensity: CGFloat = 0.7
-    
     /// Feedback generator style. To turn off, set `nil` to this parameter.
     ///
     /// The default value of this property is `.light`.
@@ -62,7 +62,7 @@ public class SnapCollectionView: UICollectionView {
             feedBackGenerator = UIImpactFeedbackGenerator(style: feedBackGeneratorStyle)
         }
     }
-    
+    /// Delegate that returns the index of the current central element of the collection.
     public weak var pickerDelegate: SnapCollectionViewDelegate?
     
     // MARK: - Private Properties

@@ -62,14 +62,23 @@ public struct SnapCollection<Item: Hashable, Cell: View>: UIViewRepresentable {
     
     // MARK: - Public Properties
     
+    /// An array of data that will be displayed in the cells of the collection.
+    ///
+    /// Array elements must comply with the `Hashable` protocol.
     let items: [Item]
+    /// The scroll direction of the grid.
     let scrollDirection: UICollectionView.ScrollDirection
+    /// The default size to use for cells.
     let itemSize: CGSize
+    /// The spacing to use between items.
     let spacing: CGFloat?
+    /// The intensity of tactile feedback during the scroll collection.
     let feedbackIntensity: CGFloat?
+    /// Tactile feedback style during collection scrolling.
     let feedBackGeneratorStyle: UIImpactFeedbackGenerator.FeedbackStyle?
+    /// A cell for a specific `IndexPath` and `Item`.
     let cell: (IndexPath, Item) -> Cell
-    
+    /// The observed value that is responsible for the index of the current central element.
     @Binding var currentSelectedCellIndex: Int
     
     // MARK: - Initializers
@@ -163,11 +172,10 @@ extension SnapCollection {
             willSet {
                 guard let view = newValue else { return }
                 hostController = UIHostingController(rootView: view)
-                if let hostView = hostController?.view {
-                    hostView.frame = contentView.bounds
-                    hostView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                    contentView.addSubview(hostView)
-                }
+                guard let hostView = hostController?.view else { return }
+                hostView.frame = contentView.bounds
+                hostView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                contentView.addSubview(hostView)
             }
         }
     }

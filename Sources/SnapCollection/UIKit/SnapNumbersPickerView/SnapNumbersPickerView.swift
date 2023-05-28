@@ -69,17 +69,19 @@ public class SnapNumbersPickerView: SnapCollectionView {
     
     // MARK: - Public Properties
     
+    /// Delegate that returns the index of the current central element of the collection.
     public weak var snapPickerViewDelegate: SnapPickerViewDelegate?
-    
+    /// The range of numbers to select in the picker.
     public var range: ClosedRange<Int> = 50...250 {
         didSet {
             numbers = [Int](range)
         }
     }
-    
+    /// Collection scrolling animation.
     public var animationSettings: AnimationSettings?
-    
+    /// The font of numbers in the picker.
     public var numbersFont: UIFont? = UIFont.systemFont(ofSize: 52, weight: .bold)
+    /// Color of numbers in the picker.
     public var numbersAccentColor: UIColor = .init(
         red: 55 / 255,
         green: 98 / 255,
